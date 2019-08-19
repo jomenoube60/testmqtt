@@ -5,10 +5,6 @@
         <input type="text" id="input_text" style="width: 25%">
         </input>
 
-        <input type="text" id="input_user" style="width: 25%" placeholder="username">
-        </input>
-        <input type="text" id="input_mdp" style="width: 25%" placeholder="mdp">
-        </input>
 
         <input type="text" id="input_host" style="width: 25%" placeholder="host">
         </input>
@@ -16,6 +12,9 @@
         <script src="/static/paho-mqtt-min.js" charset="utf-8"></script>
 
 <script>
+
+    const passwd = prompt('Password');
+    const userName = prompt('Nick name')
 
     const messagesLog = [];
 
@@ -26,8 +25,9 @@
     function sendText(keypress) {
         if (keypress.code == 'Enter') {
             const text = document.getElementById('input_text').value;
-            const payload = JSON.stringify({'author': 'john@doh.h', 'text': text});
-            client.publish('rooms/main/newtext', payload, 1, true)
+            const payload = JSON.stringify({'author': userName, 'text': text});
+            client.publish('rooms/main/newtext', payload, 1, true);
+            document.getElementById('input_text').value = '';
         }
     }
 
@@ -46,17 +46,17 @@ const client = new Paho.MQTT.Client("crava.ch", 9001, "/", "jsClient"+((Math.ran
                 }
             }
 
-    client.onConnected = () => console.log('gool!');
+    client.onConnected = () => console.log('cool!');
 
     client.connect({
         userName: "pifou",
-        password : "plop",
+        password : passwd,
         hosts : ["crava.ch"],
         ports : [9001],
         reconnect: true,
         onSuccess: () => {
             console.log('Connected');
-            client.subscribe("rooms/main/newtext", {
+            client.subscribe("rooms/main/+", {
                 onFailure: (...args) => {console.log(args)}
             });
             console.log("Subscribed");
