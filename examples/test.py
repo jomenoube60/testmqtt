@@ -5,6 +5,9 @@ HOST="crava.ch"
 USER='pifou'
 PASS='plop'
 TOPIC="rooms/main/+"
+STATIC_FILES_PATH=os.path.join(os.path.abspath(os.path.os.cur), 'static')
+
+assert( os.path.exists('README.rst') )
 
 import os
 import sys
@@ -37,7 +40,7 @@ def init_mqtt():
 
 @bottle.get('/static/<name:path>')
 def index(name):
-    return bottle.static_file(name, os.path.abspath('.'))
+    return bottle.static_file(name, STATIC_FILES_PATH)
 
 @bottle.get('/')
 def index():
