@@ -25,12 +25,12 @@ def init_mqtt():
         print("message qos=",message.qos)
         print("message retain flag=",message.retain)
 
-    client = mqtt.Client("base") #create new instance
+    client = mqtt.Client("base", transport='websockets') #create new instance
 
     client.on_message = on_message
     client.username_pw_set(USER, PASS)
 
-    client.connect(HOST)
+    client.connect(HOST, 9001)
 
     client.loop_start()    #start the loop
     client.subscribe(TOPIC)
