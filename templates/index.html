@@ -2,7 +2,15 @@
 <html>
     <div id="all_texts" style="width: 100%; height: 600px; display: block; background: lightgrey;" >
     </div>
-        <input type="text" id="input_text" style="width: 80%">
+        <input type="text" id="input_text" style="width: 25%">
+        </input>
+
+        <input type="text" id="input_user" style="width: 25%" placeholder="username">
+        </input>
+        <input type="text" id="input_mdp" style="width: 25%" placeholder="mdp">
+        </input>
+
+        <input type="text" id="input_host" style="width: 25%" placeholder="host">
         </input>
 
         <script src="/static/paho-mqtt-min.js" charset="utf-8"></script>
@@ -12,11 +20,18 @@
     function sendText(keypress) {
         if (keypress.code == 'Enter') {
             let text = document.getElementById('input_text').value;
+            let user = document.getElementById('input_user').value;
+            let mdp = document.getElementById('input_mdp').value;
+            let host = document.getElementById('input_host').value;
             console.log(text);
         }
     }
 
     document.getElementById('input_text').addEventListener('keyup', sendText);
 
-    var client = new Paho.MQTT.Client(location.hostname, Number(location.port), "clientId");
+    var client = new Paho.MQTT.Client("crava.ch", Number(1883), "clientId");
+
+    client.connect({userName: "pifou" , password : "plop" , hosts : ["crava.ch"] , ports : [1883] })
+
+    client.subscribe("rooms/main/+")
 </script>
