@@ -1,13 +1,18 @@
+#!/bin/env python
+
+# config
 HOST="crava.ch"
 USER='pifou'
 PASS='plop'
 TOPIC="rooms/main/+"
 
+import os
+import sys
+
 import bottle
 from bottle import route, run, template
 
 import paho.mqtt.client as mqtt
-import sys
 
 def init_mqtt():
 
@@ -29,6 +34,10 @@ def init_mqtt():
     return client
 
 # http routing
+
+@bottle.get('/static/<name:path>')
+def index(name):
+    return bottle.static_file(name, os.path.abspath('.'))
 
 @bottle.get('/')
 def index():
