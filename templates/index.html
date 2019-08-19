@@ -31,7 +31,12 @@
 
     var client = new Paho.MQTT.Client("crava.ch", Number(1883), "clientId");
 
-    client.connect({userName: "pifou" , password : "plop" , hosts : ["crava.ch"] , ports : [1883] })
+client.on_connect = () =>
 
-    client.subscribe("rooms/main/+")
+    client.connect({userName: "pifou" , password : "plop" , hosts : ["crava.ch"] , ports : [9001] });
+
+    setTimeout( ()=> {
+        client.subscribe("/rooms/main/++");
+    }, 5000);
+
 </script>
