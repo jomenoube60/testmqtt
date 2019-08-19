@@ -5,9 +5,6 @@ HOST="crava.ch"
 USER='pifou'
 PASS='plop'
 TOPIC="rooms/main/+"
-STATIC_FILES_PATH=os.path.join(os.path.abspath(os.path.os.cur), 'static')
-
-assert( os.path.exists('README.rst') )
 
 import os
 import sys
@@ -16,6 +13,9 @@ import bottle
 from bottle import route, run, template
 
 import paho.mqtt.client as mqtt
+
+STATIC_FILES_PATH=os.path.join(os.path.abspath(os.path.curdir), 'static')
+assert( os.path.exists('README.rst') )
 
 def init_mqtt():
 

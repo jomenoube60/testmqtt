@@ -6,4 +6,15 @@
         </input>
 
         <script src="/static/paho-mqtt-min.js" charset="utf-8"></script>
-</html>
+
+<script>
+
+    function sendText(keypress) {
+        if (keypress.code == 'Enter') {
+            let text = document.getElementById('input_text').value;
+            console.log(text);
+        }
+    }
+
+    document.getElementById('input_text').addEventListener('keyup', sendText);
+</script>
