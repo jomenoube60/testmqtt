@@ -2,6 +2,7 @@
 
 # config
 HOST="crava.ch"
+PORT=9001
 USER='pifou'
 PASS='plop'
 TOPIC="rooms/main/+"
@@ -30,7 +31,7 @@ def init_mqtt():
     client.on_message = on_message
     client.username_pw_set(USER, PASS)
 
-    client.connect(HOST, 9001)
+    client.connect(HOST, PORT)
 
     client.loop_start()    #start the loop
     client.subscribe(TOPIC)
