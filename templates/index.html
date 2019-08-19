@@ -27,7 +27,7 @@
         }
     }
 
-    document.getElementById('input_text').addEventListener('keyup', sendText);
+    document.getElementById('input_text').addEventListener('keydown', sendText);
 
     var client = new Paho.MQTT.Client("crava.ch", Number(1883), "clientId");
 
