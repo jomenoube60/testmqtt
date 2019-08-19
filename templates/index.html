@@ -17,26 +17,53 @@
 
 <script>
 
+    const messagesLog = [];
+
+    function showMessages() {
+        document.getElementById('all_texts').innerHTML = messagesLog.join('<br/>');
+    }
+
     function sendText(keypress) {
         if (keypress.code == 'Enter') {
-            let text = document.getElementById('input_text').value;
-            let user = document.getElementById('input_user').value;
-            let mdp = document.getElementById('input_mdp').value;
-            let host = document.getElementById('input_host').value;
-            console.log(text);
+            const text = document.getElementById('input_text').value;
+            const payload = JSON.stringify({'author': 'john@doh.h', 'text': text});
+            client.publish('rooms/main/newtext', payload, 1, true)
         }
     }
 
     document.getElementById('input_text').addEventListener('keydown', sendText);
 
-    var client = new Paho.MQTT.Client("crava.ch", Number(1883), "clientId");
+const client = new Paho.MQTT.Client("crava.ch", 9001, "/", "jsClient"+((Math.random()*100)&100), {
+    onMessageArrived: (msg) => console.log(msg)
+});
 
-client.on_connect = () =>
+            client.onMessageArrived = (msg) => {
+                console.log(msg.topic);
+                if (msg.topic == 'rooms/main/newtext') {
+                    const payload = JSON.parse(msg.payloadString);
+                    messagesLog.push(`<b>${payload.author}</b>: ${payload.text}`);
+                    showMessages();
+                }
+            }
 
-    client.connect({userName: "pifou" , password : "plop" , hosts : ["crava.ch"] , ports : [9001] });
+    client.onConnected = () => console.log('gool!');
 
-    setTimeout( ()=> {
-        client.subscribe("/rooms/main/++");
-    }, 5000);
+    client.connect({
+        userName: "pifou",
+        password : "plop",
+        hosts : ["crava.ch"],
+        ports : [9001],
+        reconnect: true,
+        onSuccess: () => {
+            console.log('Connected');
+            client.subscribe("rooms/main/newtext", {
+                onFailure: (...args) => {console.log(args)}
+            });
+            console.log("Subscribed");
+            showMessages();
+
+        },
+        onFailure: () => alert('Failed :(')
+    });
 
 </script>

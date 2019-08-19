@@ -26,7 +26,7 @@ def init_mqtt():
         print("message qos=",message.qos)
         print("message retain flag=",message.retain)
 
-    client = mqtt.Client("base", transport='websockets') #create new instance
+    client = mqtt.Client("pyClient", transport='websockets') #create new instance
 
     client.on_message = on_message
     client.username_pw_set(USER, PASS)
