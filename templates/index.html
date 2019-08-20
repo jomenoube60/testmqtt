@@ -37,14 +37,14 @@ const client = new Paho.MQTT.Client("crava.ch", 9001, "/", "jsClient"+((Math.ran
     onMessageArrived: (msg) => console.log(msg)
 });
 
-            client.onMessageArrived = (msg) => {
-                console.log(msg.topic);
-                if (msg.topic == 'rooms/main/newtext') {
-                    const payload = JSON.parse(msg.payloadString);
-                    messagesLog.push(`<b>${payload.author}</b>: ${payload.text}`);
-                    showMessages();
-                }
-            }
+    client.onMessageArrived = (msg) => {
+        console.log(msg.topic);
+        if (msg.topic == 'rooms/main/newtext') {
+            const payload = JSON.parse(msg.payloadString);
+            messagesLog.push(`<b>${payload.author}</b>: ${payload.text}`);
+            showMessages();
+        }
+    }
 
     client.onConnected = () => console.log('cool!');
 
